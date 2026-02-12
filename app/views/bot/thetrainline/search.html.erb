@@ -1,0 +1,138 @@
+<div class="results-container">
+  <div class="results-header">
+    <h1><i class="fas fa-search"></i> Results</h1>
+    <%= link_to "← Back", bot_thetrainline_index_path, class: "btn-secondary" %>
+  </div>
+  
+  <div class="search-again-section">
+    <h3><i class="fas fa-filter"></i> Search Again</h3>
+    <%= form_with url: bot_thetrainline_search_path, method: :get, local: true, data: { controller: "station-validation" } do |form| %>
+      <div class="search-again-grid">
+        <div>
+          <%= form.label :from, class: "form-label" do %>
+            <i class="fas fa-map-pin"></i> From
+          <% end %>
+          <%= form.text_field :from, 
+              value: @from,
+              placeholder: "From...",
+              required: true,
+              minlength: 2,
+              maxlength: 100,
+              data: { station_validation_target: "from" },
+              class: "form-input" %>
+        </div>
+        <div>
+          <%= form.label :to, class: "form-label" do %>
+            <i class="fas fa-map-pin" style="color: var(--primary);"></i> To
+          <% end %>
+          <%= form.text_field :to, 
+              value: @to,
+              placeholder: "To...",
+              required: true,
+              minlength: 2,
+              maxlength: 100,
+              data: { station_validation_target: "to" },
+              class: "form-input" %>
+        </div>
+        <div>
+          <%= form.label :departure_at, class: "form-label" do %>
+            <i class="fas fa-calendar-alt"></i> When
+          <% end %>
+          <%= form.datetime_local_field :departure_at, 
+              value: @departure_at.strftime("%Y-%m-%dT%H:%M"),
+              required: true,
+              min: "2026-02-16T00:00",
+              max: "2027-02-11T23:59",
+              data: { controller: "datetime" },
+              class: "form-input" %>
+        </div>
+        <div>
+          <%= form.submit "Search", class: "btn-primary search-again-btn" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <div class="journey-details">
+    <h2><i class="fas fa-info-circle"></i> Trip Details</h2>
+    <p><i class="fas fa-circle-arrow-right"></i> <strong><%= @from %></strong> → <strong><%= @to %></strong></p>
+    <p><i class="fas fa-clock"></i> <%= @departure_at.strftime("%B %d, %Y at %H:%M") %></p>
+  </div>
+
+  <div class="results-section">
+    <h2><i class="fas fa-trains"></i> Available Trains</h2>
+    <% if @results.any? %>
+      <div class="results">
+        <% @results.each do |segment| %>
+          <% 
+            departure_time = segment[:departure_at].strftime('%H:%M')
+            arrival_time = segment[:arrival_at].strftime('%H:%M')
+            hours = segment[:duration_in_minutes] / 60
+            minutes = segment[:duration_in_minutes] % 60
+            duration = "#{hours}h #{minutes}m"
+            operators = segment[:service_agencies].map(&:titleize).join(', ')
+            
+            # Get cheapest fare
+            cheapest_fare = segment[:fares].min_by { |f| f[:price_in_cents] }
+            currency_symbol = cheapest_fare && cheapest_fare[:currency] == 'EUR' ? '€' : (cheapest_fare ? cheapest_fare[:currency] : '')
+            cheapest_price = cheapest_fare ? "#{currency_symbol}#{(cheapest_fare[:price_in_cents] / 100.0).round(2)}" : 'N/A'
+          %>
+          <div class="journey-card">
+            <div class="journey-header">
+              <div class="journey-times">
+                <i class="fas fa-clock" style="color: var(--primary); margin-right: 6px;"></i>
+                <strong><%= departure_time %></strong> <i class="fas fa-arrow-right" style="color: var(--primary); margin: 0 8px;"></i>
+                <strong><%= arrival_time %></strong>
+                <span class="journey-duration"><%= duration %></span>
+              </div>
+              <div class="journey-price">
+                <div class="price-amount"><%= cheapest_price %></div>
+                <small class="price-from-label">from</small>
+              </div>
+            </div>
+            <div class="journey-stations">
+              <div>
+                <%= segment[:departure_station] %>
+                <% if segment[:changeovers] > 0 %>
+                  <% segment[:changeovers].times do %>
+                    <span> → . </span>
+                  <% end %>
+                  <span> → </span>
+                <% else %>
+                  <span> → </span>
+                <% end %>
+                <%= segment[:arrival_station] %>
+              </div>
+            </div>
+            <div class="journey-details-info">
+              <strong>Operator:</strong> <%= operators %> | 
+              <strong>Changes:</strong> <%= segment[:changeovers] == 0 ? 'Direct' : "#{segment[:changeovers]} change(s)" %>
+            </div>
+            
+            <% if segment[:fares].any? %>
+              <div class="fare-section">
+                <div class="fare-section-title">Available Fares:</div>
+                <div class="fare-list">
+                  <% segment[:fares].sort_by { |f| f[:price_in_cents] }.each do |fare| %>
+                    <% 
+                      currency_sym = fare[:currency] == 'EUR' ? '€' : fare[:currency]
+                      fare_price = "#{currency_sym}#{(fare[:price_in_cents] / 100.0).round(2)}"
+                    %>
+                    <div class="fare-item">
+                      <span class="fare-name"><%= fare[:name] %></span>
+                      <span class="fare-price"><%= fare_price %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="no-results">
+        No trains found for this search.
+      </p>
+    <% end %>
+  </div>
+</div>

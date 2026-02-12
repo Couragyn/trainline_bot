@@ -1,0 +1,364 @@
+/* Train Journey Search Styles */
+
+.train-search-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.train-search-container h1 {
+  margin-bottom: 30px;
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.train-search-container h1 i {
+  margin-right: 8px;
+  color: var(--primary);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.form-label i {
+  margin-right: 8px;
+  color: var(--primary);
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.1);
+}
+
+.form-help {
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(8, 145, 178, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.alert {
+  margin-top: 20px;
+  padding: 15px 16px;
+  border: 1px solid;
+  border-radius: 8px;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  color: #7f1d1d;
+  border-color: #fecaca;
+  border-left: 4px solid var(--danger);
+}
+
+.alert-error strong {
+  font-weight: 600;
+}
+
+/* Search Results Styles */
+
+.results-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 0 20px;
+}
+
+.results-header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 24px;
+}
+
+.results-container h1,
+.results-container h2 {
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.search-again-section {
+  background: var(--surface);
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid var(--border);
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.search-again-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.search-again-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.search-again-btn {
+  margin-bottom: 0;
+  padding: 12px 20px;
+  white-space: nowrap;
+  background: var(--primary);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.search-again-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.2);
+}
+
+.journey-details {
+  background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: 1px solid var(--border);
+}
+
+.journey-details p {
+  margin: 5px 0;
+  font-size: 15px;
+}
+
+.journey-details strong {
+  font-weight: 600;
+}
+
+.results-section {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.no-results {
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.alert-warning {
+  padding: 15px 16px;
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  color: #92400e;
+}
+
+.journey-card {
+  border: 1px solid var(--border);
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  background: var(--surface);
+  transition: all 0.3s ease;
+}
+
+.journey-card:hover {
+  box-shadow: 0 10px 25px rgba(8, 145, 178, 0.15);
+  border-color: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.journey-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.journey-times {
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.journey-times strong {
+  font-weight: 700;
+}
+
+.journey-duration {
+  color: var(--text-secondary);
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.journey-price {
+  text-align: right;
+}
+
+.price-amount {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--success);
+}
+
+.journey-stations {
+  margin: 10px 0;
+  padding: 12px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.journey-details-info {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.journey-details-info strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: var(--text-secondary);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.btn-secondary:hover {
+  background-color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Fare Options */
+
+.fare-section {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+.fare-section-title {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fare-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.fare-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--surface-light);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+}
+
+.fare-item:hover {
+  background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+  border-color: var(--primary-light);
+}
+
+.fare-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.fare-price {
+  font-weight: 700;
+  color: var(--success);
+  font-size: 15px;
+}
+
+.price-from-label {
+  color: var(--text-secondary);
+  font-size: 11px;
+  display: block;
+  margin-top: 2px;
+  font-weight: 500;
+}
