@@ -72,7 +72,6 @@
             duration = "#{hours}h #{minutes}m"
             operators = segment[:service_agencies].map(&:titleize).join(', ')
             
-            # Get cheapest fare
             cheapest_fare = segment[:fares].min_by { |f| f[:price_in_cents] }
             currency_symbol = cheapest_fare && cheapest_fare[:currency] == 'EUR' ? '€' : (cheapest_fare ? cheapest_fare[:currency] : '')
             cheapest_price = cheapest_fare ? "#{currency_symbol}#{(cheapest_fare[:price_in_cents] / 100.0).round(2)}" : 'N/A'
@@ -97,10 +96,8 @@
                   <% segment[:changeovers].times do %>
                     <span> → . </span>
                   <% end %>
-                  <span> → </span>
-                <% else %>
-                  <span> → </span>
                 <% end %>
+                <span> → </span>
                 <%= segment[:arrival_station] %>
               </div>
             </div>

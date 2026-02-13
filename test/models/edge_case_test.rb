@@ -47,8 +47,8 @@ class EdgeCaseTest < ActiveSupport::TestCase
     result = Bot::Thetrainline.find("  Madrid  ", "  Barcelona  ", @min_date)
     expected = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
     
-    assert_equal result.length, 0
-    assert_operator expected.length, :>, 0
+    assert_equal expected.length, result.length, "Should return same results with or without whitespace"
+    assert_operator result.length, :>, 0, "Should find results with whitespace"
   end
 
   test "find handles cities with hyphens or apostrophes" do
