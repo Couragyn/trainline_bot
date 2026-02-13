@@ -1,6 +1,6 @@
 module Bot
   class Thetrainline
-    FIXTURE_PATH = Rails.root.join('lib', 'fixtures', 'train_data.json')
+    FIXTURE_PATH = Rails.root.join("lib", "fixtures", "train_data.json")
 
     def self.find(from, to, departure_at)
       if Rails.env.production? && thetrainline_api_configured?
@@ -12,7 +12,7 @@ module Bot
 
     def self.validate_search_params(from, to, departure_at)
       errors = []
-      
+
       errors << "Departure city or station is required" if from.blank?
       errors << "Arrival city or station is required" if to.blank?
       errors << "Departure date and time is required" if departure_at.blank?
@@ -22,7 +22,7 @@ module Bot
           parsed_date = DateTime.parse(departure_at)
           min_date = DateTime.new(2026, 2, 16, 0, 0, 0, "+01:00")
           max_date = min_date + 365.days
-          
+
           if parsed_date < min_date
             errors << "Departure date cannot be before February 16, 2026"
           elsif parsed_date > max_date
@@ -60,38 +60,38 @@ module Bot
 
     def self.search_fixture_data(from, to, departure_at)
       data = load_fixture_data
-      
+
       segments = find_segments(data, from, to, departure_at)
-      
+
       format_segments(segments)
     end
 
     def self.load_fixture_data
       return @fixture_data if @fixture_data
-      
+
       file_content = File.read(FIXTURE_PATH)
       @fixture_data = JSON.parse(file_content)
     end
 
     def self.find_segments(data, from, to, departure_at)
-      segments = data['segments'] || []
-      
+      segments = data["segments"] || []
+
       segments
-        .select { |s| matches_location?(s, 'departure', from) && matches_location?(s, 'arrival', to) && same_date?(s['departure_at'], departure_at) }
-        .sort_by { |s| DateTime.parse(s['departure_at']) }
+        .select { |s| matches_location?(s, "departure", from) && matches_location?(s, "arrival", to) && same_date?(s["departure_at"], departure_at) }
+        .sort_by { |s| DateTime.parse(s["departure_at"]) }
     end
 
     def self.matches_location?(segment, type, query)
-      normalize(segment["#{type}_city"]) == normalize(query) || 
+      normalize(segment["#{type}_city"]) == normalize(query) ||
       normalize(segment["#{type}_station"]) == normalize(query)
     end
 
     # Handles accents and apostrophies. Normalizes to lowercase for comparison
     def self.normalize(string)
-      return '' if string.nil?
+      return "" if string.nil?
       string.unicode_normalize(:nfd)
-            .gsub(/[\u0300-\u036f]/, '')
-            .gsub(/['''`]/, '')
+            .gsub(/[\u0300-\u036f]/, "")
+            .gsub(/['''`]/, "")
             .downcase
             .strip
     end
@@ -106,17 +106,17 @@ module Bot
     def self.format_segments(segments)
       segments.map do |segment|
         {
-          departure_station: segment['departure_station'],
-          departure_city: segment['departure_city'],
-          departure_at: DateTime.parse(segment['departure_at']),
-          arrival_station: segment['arrival_station'],
-          arrival_city: segment['arrival_city'],
-          arrival_at: DateTime.parse(segment['arrival_at']),
-          service_agencies: segment['service_agencies'] || [],
-          duration_in_minutes: segment['duration_in_minutes'],
-          changeovers: segment['changeovers'] || 0,
-          products: segment['products'] || [],
-          fares: format_fares(segment['fares'] || [])
+          departure_station: segment["departure_station"],
+          departure_city: segment["departure_city"],
+          departure_at: DateTime.parse(segment["departure_at"]),
+          arrival_station: segment["arrival_station"],
+          arrival_city: segment["arrival_city"],
+          arrival_at: DateTime.parse(segment["arrival_at"]),
+          service_agencies: segment["service_agencies"] || [],
+          duration_in_minutes: segment["duration_in_minutes"],
+          changeovers: segment["changeovers"] || 0,
+          products: segment["products"] || [],
+          fares: format_fares(segment["fares"] || [])
         }
       end
     end
@@ -124,9 +124,9 @@ module Bot
     def self.format_fares(fares)
       fares.map do |fare|
         {
-          name: fare['name'],
-          price_in_cents: fare['price_in_cents'],
-          currency: fare['currency']
+          name: fare["name"],
+          price_in_cents: fare["price_in_cents"],
+          currency: fare["currency"]
         }
       end
     end

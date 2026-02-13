@@ -9,7 +9,7 @@ class Bot::ThetrainlineTest < ActiveSupport::TestCase
   test "find returns an array using fixture data" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @departure_date)
     assert_kind_of Array, result
-    
+
     assert result.any?, "Should have results from fixture data"
     assert_equal @fixture_segments.length, result.length
   end
@@ -95,9 +95,9 @@ class Bot::ThetrainlineTest < ActiveSupport::TestCase
 
   test "segments are sorted by departure time from fixture data" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @departure_date)
-    
+
     assert result.any?, "Should have results from fixture"
-    
+
     result.each_cons(2) do |segment1, segment2|
       assert_operator segment1[:departure_at], :<=, segment2[:departure_at]
     end
@@ -140,13 +140,13 @@ class Bot::ThetrainlineTest < ActiveSupport::TestCase
 
     time_diff_days = (segment[:arrival_at] - segment[:departure_at])
     expected_duration = (time_diff_days.to_f * 24 * 60).to_i
-    
+
     assert_equal segment[:duration_in_minutes], expected_duration, "Duration in fixture should match time difference"
   end
 
   test "changeovers is non-negative integer in fixture data" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @departure_date)
-    
+
     result.each do |segment|
       assert_operator segment[:changeovers], :>=, 0, "Changeovers in fixture should be non-negative"
     end
@@ -155,23 +155,23 @@ class Bot::ThetrainlineTest < ActiveSupport::TestCase
   test "fixture data loads successfully" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @departure_date)
     assert result.any?, "Fixture data should load and return results"
-    
+
     raw_fixture = fixture_data
-    assert raw_fixture.key?('segments'), "Fixture should have segments"
-    assert raw_fixture['segments'].any?, "Fixture segments should not be empty"
+    assert raw_fixture.key?("segments"), "Fixture should have segments"
+    assert raw_fixture["segments"].any?, "Fixture segments should not be empty"
   end
 
   test "exact city matches are prioritized over station matches in fixture data" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @departure_date)
-    
+    raw_segments = fixture_segments
+
     assert result.any?
     result.each do |segment|
-      fixture_match = @fixture_segments.find do |s|
-        s['departure_station'] == segment[:departure_station] &&
-        s['arrival_station'] == segment[:arrival_station]
+      fixture_match = raw_segments.find do |s|
+        s["departure_station"] == segment[:departure_station] &&
+        s["arrival_station"] == segment[:arrival_station]
       end
       assert fixture_match, "Segment should match fixture data"
     end
   end
 end
-

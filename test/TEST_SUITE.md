@@ -36,7 +36,7 @@ rails test test/models/bot_thetrainline_test.rb -n test_find_returns_an_array
 
 ## Test Data
 
-Tests use fake data from `lib/fixtures/train_data.json`. The main routes are Madrid ↔ Barcelona and Barcelona ↔ Sevilla for Feb 16-22, 2026.
+Tests use fake data from `lib/fixtures/train_data.json`. The routes are between Valencia, Madrid, Barcelona, and Sevilla for Feb 16-22, 2026.
 
 ## What We Check
 

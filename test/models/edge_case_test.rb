@@ -38,7 +38,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
     result1 = Bot::Thetrainline.find("MaDrId", "BaRcElOnA", @min_date)
     result2 = Bot::Thetrainline.find("madrid", "barcelona", @min_date)
     result3 = Bot::Thetrainline.find("MADRID", "BARCELONA", @min_date)
-    
+
     assert_equal result1.length, result2.length, "Case-insensitive for mixed case"
     assert_equal result2.length, result3.length, "Case-insensitive for lowercase"
   end
@@ -46,7 +46,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
   test "find handles leading/trailing whitespace in city names" do
     result = Bot::Thetrainline.find("  Madrid  ", "  Barcelona  ", @min_date)
     expected = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     assert_equal expected.length, result.length, "Should return same results with or without whitespace"
     assert_operator result.length, :>, 0, "Should find results with whitespace"
   end
@@ -58,9 +58,9 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "find returns journeys with multiple changeovers" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     journey_with_changes = result.find { |j| j[:changeovers] > 0 }
-    
+
     if journey_with_changes
       assert_operator journey_with_changes[:changeovers], :>, 0
       assert_kind_of Integer, journey_with_changes[:changeovers]
@@ -71,11 +71,11 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "find returns journeys crossing day boundaries" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     journey_crossing_midnight = result.find do |j|
       j[:arrival_at].day != j[:departure_at].day
     end
-    
+
     if journey_crossing_midnight
       assert_operator journey_crossing_midnight[:arrival_at], :>, journey_crossing_midnight[:departure_at]
     else
@@ -86,7 +86,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
   test "find handles very early morning departures" do
     early_date = DateTime.new(2026, 2, 16, 0, 30, 0, "+01:00")
     result = Bot::Thetrainline.find("Madrid", "Barcelona", early_date)
-    
+
     assert_kind_of Array, result
     result.each do |journey|
       assert_kind_of DateTime, journey[:departure_at]
@@ -96,7 +96,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
   test "find handles late night departures" do
     late_date = DateTime.new(2026, 2, 16, 23, 45, 0, "+01:00")
     result = Bot::Thetrainline.find("Madrid", "Barcelona", late_date)
-    
+
     assert_kind_of Array, result
     result.each do |journey|
       assert_kind_of DateTime, journey[:departure_at]
@@ -105,7 +105,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "segments with single fare option" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     journey_single_fare = result.find { |j| j[:fares].length == 1 }
     if journey_single_fare
       assert_equal journey_single_fare[:fares].length, 1
@@ -116,7 +116,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "segments with many fare options" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     journey_many_fares = result.find { |j| j[:fares].length > 2 }
     if journey_many_fares
       assert_operator journey_many_fares[:fares].length, :>=, 3
@@ -128,12 +128,12 @@ class EdgeCaseTest < ActiveSupport::TestCase
   test "fares are priced in descending flexibility (highest price expected last)" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
     segment = result.first
-    
+
     if segment[:fares].length > 1
       fares = segment[:fares]
       advance = fares.find { |f| f[:name].include?("Advance") }
       flexible = fares.find { |f| f[:name].include?("Flexible") }
-      
+
       if advance && flexible
         assert_operator flexible[:price_in_cents], :>=, advance[:price_in_cents]
       end
@@ -142,11 +142,11 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "journey duration increases with more changeovers" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     if result.length > 1
       journey_no_changes = result.find { |j| j[:changeovers] == 0 }
       journey_with_changes = result.find { |j| j[:changeovers] > 0 }
-      
+
       if journey_no_changes && journey_with_changes
         assert_operator journey_no_changes[:duration_in_minutes], :<=, journey_with_changes[:duration_in_minutes]
       else
@@ -159,7 +159,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "journey duration is positive and reasonable" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     result.each do |journey|
       assert_operator journey[:duration_in_minutes], :>, 0, "Duration must be positive"
       assert_operator journey[:duration_in_minutes], :<, 1440 * 7, "Duration should be less than 7 days"
@@ -179,7 +179,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "journey times are returned as DateTime objects" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     result.each do |journey|
       assert_kind_of DateTime, journey[:departure_at]
       assert_kind_of DateTime, journey[:arrival_at]
@@ -188,7 +188,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
 
   test "journey times have timezone information" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-    
+
     result.each do |journey|
       assert journey[:departure_at].zone.present?, "Departure should have timezone"
       assert journey[:arrival_at].zone.present?, "Arrival should have timezone"

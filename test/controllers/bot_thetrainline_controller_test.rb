@@ -30,7 +30,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select "h1", "Results"
   end
@@ -41,7 +41,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".alert-error"
     assert_select "input[name='from']"
@@ -53,7 +53,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       from: "Madrid",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".alert-error"
   end
@@ -64,7 +64,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: ""
     }
-    
+
     assert_response :success
     assert_select ".alert-error"
   end
@@ -75,7 +75,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Madrid",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".alert-error"
   end
@@ -86,7 +86,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-15T09:00"
     }
-    
+
     assert_response :success
     assert_select ".alert-error"
   end
@@ -97,7 +97,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2027-02-17T09:00"
     }
-    
+
     assert_response :success
     assert_select ".alert-error"
   end
@@ -108,7 +108,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "invalid-date"
     }
-    
+
     assert_response :success
     assert_select ".alert-error"
   end
@@ -119,7 +119,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".journey-card"
   end
@@ -130,7 +130,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".journey-details"
     assert_select ".journey-details", /Madrid/
@@ -143,7 +143,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "  Barcelona  ",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".results"
   end
@@ -154,7 +154,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select "a", "← Back"
   end
@@ -165,7 +165,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select "input[name='from'][value='Madrid']"
     assert_select "input[name='to'][value='Barcelona']"
@@ -177,7 +177,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".journey-times"
     assert_select ".journey-price"
@@ -191,7 +191,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".fare-section"
     assert_select ".fare-item"
@@ -204,7 +204,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     cards = css_select ".journey-card"
     assert_operator cards.length, :>, 1, "Should have multiple results"
@@ -216,7 +216,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "NonExistentCity",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".no-results", /No trains found/
   end
@@ -227,7 +227,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
       to: "barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".journey-card"
   end

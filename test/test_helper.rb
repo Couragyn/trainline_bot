@@ -10,21 +10,15 @@ class ActiveSupport::TestCase
   end
 
   def load_fixture_data
-    file_path = Rails.root.join('lib', 'fixtures', 'train_data.json')
+    file_path = Rails.root.join("lib", "fixtures", "train_data.json")
     JSON.parse(File.read(file_path))
   end
 
   def fixture_segments
-    fixture_data['segments'] || []
+    fixture_data["segments"] || []
   end
 
   def find_fixture_route(from, to, date)
-    segments = fixture_segments
-    segments.select do |segment|
-      matches_from = segment['departure_city'].casecmp?(from) || segment['departure_station'].casecmp?(from)
-      matches_to = segment['arrival_city'].casecmp?(to) || segment['arrival_station'].casecmp?(to)
-      matches_date = DateTime.parse(segment['departure_at']).to_date == date.to_date
-      matches_from && matches_to && matches_date
-    end
+    Bot::Thetrainline.find(from, to, date)
   end
 end

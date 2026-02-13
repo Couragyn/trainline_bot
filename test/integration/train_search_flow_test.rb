@@ -11,7 +11,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".journey-card"
   end
@@ -29,7 +29,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
       to: "Sevilla",
       departure_at: "2026-02-16T15:00"
     }
-    
+
     assert_response :success
     assert_select ".journey-card"
   end
@@ -131,7 +131,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
     }
-    
+
     assert_response :success
     assert_select ".journey-card"
   end
