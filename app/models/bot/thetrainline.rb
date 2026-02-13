@@ -76,17 +76,24 @@ module Bot
     def self.find_segments(data, from, to, departure_at)
       segments = data['segments'] || []
       
-      matching_segments = segments.select do |segment|
-        matches_departure = segment['departure_city'].casecmp?(from) || segment['departure_station'].casecmp?(from)
-        matches_arrival = segment['arrival_city'].casecmp?(to) || segment['arrival_station'].casecmp?(to)
-        matches_departure && matches_arrival && same_date?(segment['departure_at'], departure_at)
-      end
-      
-      matching_segments.sort_by do |segment|
-        exact_departure = (segment['departure_city'] == from || segment['departure_station'] == from) ? 0 : 1
-        exact_arrival = (segment['arrival_city'] == to || segment['arrival_station'] == to) ? 0 : 1
-        [exact_departure, exact_arrival]
-      end
+      segments
+        .select { |s| matches_location?(s, 'departure', from) && matches_location?(s, 'arrival', to) && same_date?(s['departure_at'], departure_at) }
+        .sort_by { |s| DateTime.parse(s['departure_at']) }
+    end
+
+    def self.matches_location?(segment, type, query)
+      normalize(segment["#{type}_city"]) == normalize(query) || 
+      normalize(segment["#{type}_station"]) == normalize(query)
+    end
+
+    # Handles accents and apostrophies. Normalizes to lowercase for comparison
+    def self.normalize(string)
+      return '' if string.nil?
+      string.unicode_normalize(:nfd)
+            .gsub(/[\u0300-\u036f]/, '')
+            .gsub(/['''`]/, '')
+            .downcase
+            .strip
     end
 
     def self.same_date?(segment_datetime, search_datetime)
