@@ -27,7 +27,7 @@ The app searches against fixture data in `lib/fixtures/train_data.json`. Availab
 
 The requirements were that this bot needs triggers searches on https://www.thetrainline.com, but that I did not need to solve any of the anti-bot logic they have, and it's fine to use a local static version of the data.
 
-I suspect that TheTrainLine has improved their anti-bot logic. Running a `GET` request with the network tab opens blocks the requests with the error message `Access is temporarily restricted`.
+Running a `GET` request with the network tab opens blocks the requests with the error message `Access is temporarily restricted`. This is likely due to their anti-bot logic.
 
 As such I have based the fixture data structure on the Segment Output snippet from the task Gist.
 
