@@ -25,9 +25,9 @@ Visit `http://localhost:3000`
 
 The app searches against fixture data in `lib/fixtures/train_data.json`. Available routes are between Madrid, Barcelona, Sevilla, and Valencia for Feb 16-22, 2026.
 
-The requirements were that this bot needs triggers searches on https://www.thetrainline.com, but that I did not need to solve any of the anti-bot logic they have, and it's fine to use a local static version of the data.
+The requirements included this bot needing to trigger searches on https://www.thetrainline.com, but that it's fine to use a local static version of the data to avoid anti-bot logic.
 
-I suspect that TheTrainLine has improved their anti-bot logic. Running a `GET` request with the network tab opens blocks the requests with the error message `Access is temporarily restricted`.
+I suspect that TheTrainLine has improved their anti-bot logic. Running a `GET` request with the browser network tab opens blocks the requests with the error message `Access is temporarily restricted`.
 
 As such I have based the fixture data structure on the Segment Output snippet from the task Gist.
 

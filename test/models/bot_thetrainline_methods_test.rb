@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ThetrainlineHelperMethodsTest < ActiveSupport::TestCase
+class BotThetrainlineMethodsTest < ActiveSupport::TestCase
   test "normalize: applies all transformations (lowercase, accents, apostrophes, whitespace)" do
     result = Bot::Thetrainline.send(:normalize, "  MADRID São Paulo O'Neill L'Aquila Montpellier  ")
     assert_equal "madrid sao paulo oneill laquila montpellier", result
