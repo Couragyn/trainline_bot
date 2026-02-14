@@ -21,12 +21,12 @@ module Bot
         begin
           parsed_date = DateTime.parse(departure_at)
           min_date = DateTime.new(2026, 2, 16, 0, 0, 0, "+01:00")
-          max_date = min_date + 365.days
+          max_date = DateTime.new(2027, 2, 22, 0, 0, 0, "+01:00")
 
           if parsed_date < min_date
             errors << "Departure date cannot be before February 16, 2026"
           elsif parsed_date > max_date
-            errors << "Departure date cannot be more than one year in advance"
+            errors << "Departure date cannot be after February 22, 2027"
           end
         rescue ArgumentError
           errors << "Invalid date and time format"
@@ -77,8 +77,13 @@ module Bot
       segments = data["segments"] || []
 
       segments
-        .select { |s| matches_location?(s, "departure", from) && matches_location?(s, "arrival", to) && same_date?(s["departure_at"], departure_at) }
+        .select { |s| matches_location?(s, "departure", from) && matches_location?(s, "arrival", to) && same_date?(s["departure_at"], departure_at) && has_fares?(s) }
         .sort_by { |s| DateTime.parse(s["departure_at"]) }
+    end
+
+    def self.has_fares?(segment)
+      fares = segment["fares"] || []
+      fares.is_a?(Array) && fares.length > 0
     end
 
     def self.matches_location?(segment, type, query)

@@ -20,14 +20,14 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
     get bot_thetrainline_search_path, params: {
       from: "Madrid",
       to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
+      departure_at: "2026-02-22T09:00"
     }
     assert_response :success
 
     get bot_thetrainline_search_path, params: {
       from: "Barcelona",
       to: "Sevilla",
-      departure_at: "2026-02-16T15:00"
+      departure_at: "2026-02-22T15:00"
     }
 
     assert_response :success
@@ -38,7 +38,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
     get bot_thetrainline_search_path, params: {
       from: "Madrid",
       to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
+      departure_at: "2026-02-22T09:00"
     }
     assert_response :success
     assert_select "a", "← Back"
@@ -52,56 +52,26 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
     get bot_thetrainline_search_path, params: {
       from: "Madrid",
       to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
+      departure_at: "2026-02-22T09:00"
     }
 
     assert_response :success
     assert_select ".journey-details", /Madrid/
     assert_select ".journey-details", /Barcelona/
-    assert_select ".journey-details", /February 16, 2026/
+    assert_select ".journey-details", /February 22, 2026/
   end
 
-  test "search results display price information" do
+  test "search results display changeover, fares, price and duration information" do
     get bot_thetrainline_search_path, params: {
       from: "Madrid",
       to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
+      departure_at: "2026-02-22T09:00"
     }
 
     assert_response :success
     assert_select ".price-amount"
-  end
-
-  test "search results display duration information" do
-    get bot_thetrainline_search_path, params: {
-      from: "Madrid",
-      to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
-    }
-
-    assert_response :success
     assert_select ".journey-duration"
-  end
-
-  test "search results display changeover information" do
-    get bot_thetrainline_search_path, params: {
-      from: "Madrid",
-      to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
-    }
-
-    assert_response :success
     assert_select ".journey-details-info", /Changes:/
-  end
-
-  test "results show available fares" do
-    get bot_thetrainline_search_path, params: {
-      from: "Madrid",
-      to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
-    }
-
-    assert_response :success
     assert_select ".fare-section"
     assert_select ".fare-item"
   end
@@ -110,7 +80,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
     get bot_thetrainline_search_path, params: {
       from: "Madrid",
       to: "Madrid",
-      departure_at: "2026-02-16T09:00"
+      departure_at: "2026-02-22T09:00"
     }
 
     assert_response :success
@@ -122,14 +92,14 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
     get bot_thetrainline_search_path, params: {
       from: "Madrid",
       to: "Madrid",
-      departure_at: "2026-02-16T09:00"
+      departure_at: "2026-02-22T09:00"
     }
     assert_select ".alert-error"
 
     get bot_thetrainline_search_path, params: {
       from: "Madrid",
       to: "Barcelona",
-      departure_at: "2026-02-16T09:00"
+      departure_at: "2026-02-22T09:00"
     }
 
     assert_response :success

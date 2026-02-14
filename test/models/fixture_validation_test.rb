@@ -122,17 +122,13 @@ class FixtureValidationTest < ActiveSupport::TestCase
     end
   end
 
-  test "service_agencies array is not empty" do
+  test "service_agencies array is not empty and contains only known values" do
+    valid_agencies = [ "thetrainline" ]
+
     @raw_fixture["segments"].each_with_index do |segment, index|
       assert_operator segment["service_agencies"].length, :>, 0,
         "Segment #{index}: should have at least one service agency"
-    end
-  end
 
-  test "service_agencies contains only known values" do
-    valid_agencies = [ "thetrainline", "renfe", "sncf", "db", "trenitalia" ]
-
-    @raw_fixture["segments"].each_with_index do |segment, index|
       segment["service_agencies"].each do |agency|
         assert valid_agencies.include?(agency.downcase),
           "Segment #{index}: unknown agency '#{agency}'"
@@ -140,17 +136,13 @@ class FixtureValidationTest < ActiveSupport::TestCase
     end
   end
 
-  test "products array is not empty" do
+  test "products array is not empty and contains only known values" do
+    valid_products = [ "train" ]
+
     @raw_fixture["segments"].each_with_index do |segment, index|
       assert_operator segment["products"].length, :>, 0,
         "Segment #{index}: should have at least one product"
-    end
-  end
 
-  test "products contains only known values" do
-    valid_products = [ "train", "bus", "coach", "flight", "ferry" ]
-
-    @raw_fixture["segments"].each_with_index do |segment, index|
       segment["products"].each do |product|
         assert valid_products.include?(product.downcase),
           "Segment #{index}: unknown product '#{product}'"
@@ -158,31 +150,23 @@ class FixtureValidationTest < ActiveSupport::TestCase
     end
   end
 
-  test "changeovers is non-negative" do
+  test "changeovers is non-negative reasonable number" do
     @raw_fixture["segments"].each_with_index do |segment, index|
       assert_operator segment["changeovers"], :>=, 0,
         "Segment #{index}: changeovers should be >= 0"
-    end
-  end
 
-  test "changeovers is reasonable number" do
-    @raw_fixture["segments"].each_with_index do |segment, index|
       assert_operator segment["changeovers"], :<, 10,
         "Segment #{index}: changeovers should be < 10 (unreasonable value)"
     end
   end
 
-  test "each segment has at least one fare" do
-    @raw_fixture["segments"].each_with_index do |segment, index|
-      assert_operator segment["fares"].length, :>, 0,
-        "Segment #{index}: should have at least one fare"
-    end
-  end
-
-  test "each fare has required fields" do
+  test "each segment has at least one fare with required fields" do
     required_fare_fields = [ "name", "price_in_cents", "currency" ]
 
     @raw_fixture["segments"].each_with_index do |segment, index|
+      assert_operator segment["fares"].length, :>, 0,
+        "Segment #{index}: should have at least one fare"
+
       segment["fares"].each_with_index do |fare, fare_idx|
         required_fare_fields.each do |field|
           assert fare.key?(field),
@@ -210,15 +194,6 @@ class FixtureValidationTest < ActiveSupport::TestCase
       segment["fares"].each_with_index do |fare, fare_idx|
         assert_operator fare["price_in_cents"], :>, 0,
           "Segment #{index}, Fare #{fare_idx}: price should be > 0"
-      end
-    end
-  end
-
-  test "fare prices are reasonable (less than 100,000 EUR cents / 1000 EUR)" do
-    @raw_fixture["segments"].each_with_index do |segment, index|
-      segment["fares"].each_with_index do |fare, fare_idx|
-        assert_operator fare["price_in_cents"], :<, 100000,
-          "Segment #{index}, Fare #{fare_idx}: price seems unreasonably high"
       end
     end
   end

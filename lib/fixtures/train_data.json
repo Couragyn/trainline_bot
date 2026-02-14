@@ -2279,6 +2279,102 @@
           "currency": "EUR"
         }
       ]
+    },
+    {
+      "departure_station": "Sevilla Santa Justa",
+      "departure_city": "Sevilla",
+      "departure_at": "2026-02-16T23:30:00+01:00",
+      "arrival_station": "Barcelona Sants",
+      "arrival_city": "Barcelona",
+      "arrival_at": "2026-02-17T01:30:00+01:00",
+      "service_agencies": ["thetrainline"],
+      "duration_in_minutes": 120,
+      "changeovers": 0,
+      "products": ["train"],
+      "fares": [
+        {
+          "name": "Advance Single",
+          "price_in_cents": 4500,
+          "currency": "EUR"
+        },
+        {
+          "name": "Flexible Single",
+          "price_in_cents": 7500,
+          "currency": "EUR"
+        }
+      ]
+    },
+    {
+      "departure_station": "Sevilla Santa Justa",
+      "departure_city": "Sevilla",
+      "departure_at": "2026-02-16T01:00:00+01:00",
+      "arrival_station": "Barcelona Sants",
+      "arrival_city": "Barcelona",
+      "arrival_at": "2026-02-16T04:00:00+01:00",
+      "service_agencies": ["thetrainline"],
+      "duration_in_minutes": 180,
+      "changeovers": 0,
+      "products": ["train"],
+      "fares": [
+        {
+          "name": "Advance Single",
+          "price_in_cents": 3900,
+          "currency": "EUR"
+        },
+        {
+          "name": "Flexible Single",
+          "price_in_cents": 6900,
+          "currency": "EUR"
+        }
+      ]
+    },
+    {
+      "departure_station": "Sevilla Santa Justa",
+      "departure_city": "Sevilla",
+      "departure_at": "2026-02-16T17:00:00+01:00",
+      "arrival_station": "Barcelona Sants",
+      "arrival_city": "Barcelona",
+      "arrival_at": "2026-02-16T20:30:00+01:00",
+      "service_agencies": ["thetrainline"],
+      "duration_in_minutes": 210,
+      "changeovers": 0,
+      "products": ["train"],
+      "fares": [
+        {
+          "name": "Standard Single",
+          "price_in_cents": 5200,
+          "currency": "EUR"
+        }
+      ]
+    },
+    {
+      "departure_station": "Sevilla Santa Justa",
+      "departure_city": "Sevilla",
+      "departure_at": "2026-02-16T12:00:00+01:00",
+      "arrival_station": "Barcelona Sants",
+      "arrival_city": "Barcelona",
+      "arrival_at": "2026-02-16T15:45:00+01:00",
+      "service_agencies": ["thetrainline"],
+      "duration_in_minutes": 225,
+      "changeovers": 0,
+      "products": ["train"],
+      "fares": [
+        {
+          "name": "Advance Single",
+          "price_in_cents": 3200,
+          "currency": "EUR"
+        },
+        {
+          "name": "Standard Single",
+          "price_in_cents": 5000,
+          "currency": "EUR"
+        },
+        {
+          "name": "Flexible Single",
+          "price_in_cents": 7200,
+          "currency": "EUR"
+        }
+      ]
     }
   ]
 }

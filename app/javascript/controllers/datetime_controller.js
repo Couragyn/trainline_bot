@@ -45,7 +45,7 @@ export default class extends Controller {
       input.setCustomValidity('Departure date cannot be before February 16, 2026')
       input.reportValidity()
     } else if (value && max && value > max) {
-      input.setCustomValidity('Departure date cannot be more than one year in advance')
+      input.setCustomValidity('Departure date cannot be after February 22, 2027')
       input.reportValidity()
     } else {
       input.setCustomValidity('')

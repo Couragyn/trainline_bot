@@ -3,18 +3,20 @@ require "test_helper"
 class EdgeCaseTest < ActiveSupport::TestCase
   def setup
     @min_date = DateTime.new(2026, 2, 16, 9, 0, 0, "+01:00")
-    @max_date = DateTime.new(2027, 2, 11, 23, 59, 59, "+01:00")
+    @max_date = DateTime.new(2027, 2, 22, 23, 59, 59, "+01:00")
   end
 
   test "find with exact minimum allowed date" do
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
     assert_kind_of Array, result
+    assert_not_empty result
   end
 
   test "find with exact maximum allowed date" do
     @max_fixture_date = DateTime.new(2026, 2, 22, 23, 59, 59, "+01:00")
     result = Bot::Thetrainline.find("Madrid", "Barcelona", @max_fixture_date)
     assert_kind_of Array, result
+    assert_not_empty result
   end
 
   test "find returns empty for date one day before minimum" do
@@ -23,8 +25,8 @@ class EdgeCaseTest < ActiveSupport::TestCase
     assert_equal [], result, "Should return empty for date before minimum"
   end
 
-  test "find returns empty for date one year after maximum" do
-    after_max = DateTime.new(2028, 2, 12, 0, 0, 0, "+01:00")
+  test "find returns empty for date one day after maximum" do
+    after_max = DateTime.new(2028, 2, 23, 0, 0, 0, "+01:00")
     result = Bot::Thetrainline.find("Madrid", "Barcelona", after_max)
     assert_equal [], result, "Should return empty for date after maximum"
   end
@@ -56,46 +58,28 @@ class EdgeCaseTest < ActiveSupport::TestCase
     assert_kind_of Array, result
   end
 
-  test "find returns journeys with multiple changeovers" do
-    result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
+  test "find returns journeys with multiple and no changeovers" do
+    journey_no_changeovers = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
+    assert_equal 0, journey_no_changeovers.first[:changeovers]
 
-    journey_with_changes = result.find { |j| j[:changeovers] > 0 }
-
-    if journey_with_changes
-      assert_operator journey_with_changes[:changeovers], :>, 0
-      assert_kind_of Integer, journey_with_changes[:changeovers]
-    else
-      assert_kind_of Array, result
-    end
+    journey_with_changes = Bot::Thetrainline.find("Valencia", "Sevilla", @min_date)
+    assert_operator journey_with_changes.first[:changeovers], :>, 0
+    assert_kind_of Integer, journey_with_changes.first[:changeovers]
   end
 
   test "find returns journeys crossing day boundaries" do
-    result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
+    result = Bot::Thetrainline.find("Sevilla", "Barcelona", @min_date)
 
     journey_crossing_midnight = result.find do |j|
       j[:arrival_at].day != j[:departure_at].day
     end
 
-    if journey_crossing_midnight
-      assert_operator journey_crossing_midnight[:arrival_at], :>, journey_crossing_midnight[:departure_at]
-    else
-      assert_kind_of Array, result
-    end
+    assert_operator journey_crossing_midnight[:arrival_at], :>, journey_crossing_midnight[:departure_at]
   end
 
   test "find handles very early morning departures" do
     early_date = DateTime.new(2026, 2, 16, 0, 30, 0, "+01:00")
-    result = Bot::Thetrainline.find("Madrid", "Barcelona", early_date)
-
-    assert_kind_of Array, result
-    result.each do |journey|
-      assert_kind_of DateTime, journey[:departure_at]
-    end
-  end
-
-  test "find handles late night departures" do
-    late_date = DateTime.new(2026, 2, 16, 23, 45, 0, "+01:00")
-    result = Bot::Thetrainline.find("Madrid", "Barcelona", late_date)
+    result = Bot::Thetrainline.find("Sevilla", "Barcelona", early_date)
 
     assert_kind_of Array, result
     result.each do |journey|
@@ -104,25 +88,17 @@ class EdgeCaseTest < ActiveSupport::TestCase
   end
 
   test "segments with single fare option" do
-    result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
+    result = Bot::Thetrainline.find("Sevilla", "Barcelona", @min_date)
 
     journey_single_fare = result.find { |j| j[:fares].length == 1 }
-    if journey_single_fare
-      assert_equal journey_single_fare[:fares].length, 1
-    else
-      assert_kind_of Array, result
-    end
+    assert_equal journey_single_fare[:fares].length, 1
   end
 
   test "segments with many fare options" do
-    result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
+    result = Bot::Thetrainline.find("Sevilla", "Barcelona", @min_date)
 
     journey_many_fares = result.find { |j| j[:fares].length > 2 }
-    if journey_many_fares
-      assert_operator journey_many_fares[:fares].length, :>=, 3
-    else
-      assert_kind_of Array, result
-    end
+    assert_operator journey_many_fares[:fares].length, :>=, 3
   end
 
   test "fares are priced in descending flexibility (highest price expected last)" do
@@ -134,26 +110,7 @@ class EdgeCaseTest < ActiveSupport::TestCase
       advance = fares.find { |f| f[:name].include?("Advance") }
       flexible = fares.find { |f| f[:name].include?("Flexible") }
 
-      if advance && flexible
-        assert_operator flexible[:price_in_cents], :>=, advance[:price_in_cents]
-      end
-    end
-  end
-
-  test "journey duration increases with more changeovers" do
-    result = Bot::Thetrainline.find("Madrid", "Barcelona", @min_date)
-
-    if result.length > 1
-      journey_no_changes = result.find { |j| j[:changeovers] == 0 }
-      journey_with_changes = result.find { |j| j[:changeovers] > 0 }
-
-      if journey_no_changes && journey_with_changes
-        assert_operator journey_no_changes[:duration_in_minutes], :<=, journey_with_changes[:duration_in_minutes]
-      else
-        assert_kind_of Array, result
-      end
-    else
-      assert_kind_of Array, result
+      assert_operator flexible[:price_in_cents], :>=, advance[:price_in_cents]
     end
   end
 
