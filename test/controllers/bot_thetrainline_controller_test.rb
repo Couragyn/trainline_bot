@@ -5,14 +5,14 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
     get bot_thetrainline_index_path
     assert_response :success
     assert_select "h1", "Find Trains"
-    assert_select "form[action=?]", bot_thetrainline_search_path
+    assert_select "form[action=?]", search_bot_thetrainline_index_path
     assert_select "input[name='from']"
     assert_select "input[name='to']"
     assert_select "input[name='departure_at']"
   end
 
   test "should GET search with valid parameters and display results" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-22T09:00"
@@ -38,7 +38,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should strip whitespace from parameters" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "  Madrid  ",
       to: "  Barcelona  ",
       departure_at: "2026-02-22T09:00"
@@ -49,7 +49,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should handle case-insensitive search" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "madrid",
       to: "barcelona",
       departure_at: "2026-02-16T09:00"
@@ -60,7 +60,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should show 'No trains found' for non-existent route" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "NonExistentCity",
       departure_at: "2026-02-16T09:00"
@@ -71,7 +71,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display error when from is missing" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "",
       to: "Barcelona",
       departure_at: "2026-02-22T09:00"
@@ -83,7 +83,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display error when to is missing" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       to: "",
       from: "Madrid",
       departure_at: "2026-02-22T09:00"
@@ -94,7 +94,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display error when departure_at is missing" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: ""
@@ -105,7 +105,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display error when from and to are the same" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Madrid",
       departure_at: "2026-02-22T09:00"
@@ -116,7 +116,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display error for date before minimum" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-15T09:00"
@@ -127,7 +127,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display error for date after maximum" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2027-02-23T09:00"
@@ -138,7 +138,7 @@ class Bot::ThetrainlineControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should display error for invalid date format" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "invalid-date"

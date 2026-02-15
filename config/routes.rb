@@ -1,10 +1,17 @@
 Rails.application.routes.draw do
   namespace :bot do
-    get "thetrainline/index"
-    get "thetrainline/search"
+    resources :thetrainline, only: [:index] do
+      collection do
+        get :search
+      end
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  # Health check endpoints for monitoring
+  get "health" => "health#show", as: :health_check
+  get "health/deep" => "health#deep", as: :deep_health_check
+  
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check

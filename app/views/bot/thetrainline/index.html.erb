@@ -1,7 +1,7 @@
 <div class="train-search-container">
   <h1><i class="fas fa-train"></i> Find Trains</h1>
   
-  <%= form_with url: bot_thetrainline_search_path, method: :get, local: true, data: { controller: "station-validation" } do |form| %>
+  <%= form_with url: search_bot_thetrainline_index_path, method: :get, local: true, data: { controller: "station-validation" } do |form| %>
     <div class="form-group">
       <%= form.label :from, class: "form-label" do %>
         <i class="fas fa-map-pin"></i> From

@@ -27,7 +27,9 @@ The app searches against fixture data in `lib/fixtures/train_data.json`. Availab
 
 The requirements included this bot needing to trigger searches on https://www.thetrainline.com, but that it's fine to use a local static version of the data to avoid anti-bot logic.
 
-Running a `GET` request on thetrainline with the browser network tab opens blocks the requests with the error message `Access is temporarily restricted`. As such I have based the fixture data structure on the Segment Output snippet from the task Gist.
+Running a `GET` request on thetrainline with the browser DevTools opens blocks the requests with the error message `Access is temporarily restricted`. When I managed to get through that and view the API call, [the response didn't have any meaning data](https://imgur.com/a/8GI0BH4).
+
+Due to this I have based the fixture data structure on the Segment Output snippet from the task Gist.
 
 ## Testing
 

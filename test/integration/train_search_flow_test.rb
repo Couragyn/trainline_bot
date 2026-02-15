@@ -6,7 +6,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", "Find Trains"
 
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-16T09:00"
@@ -17,14 +17,14 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "user can modify search from results page" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-22T09:00"
     }
     assert_response :success
 
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Barcelona",
       to: "Sevilla",
       departure_at: "2026-02-22T15:00"
@@ -35,7 +35,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "user can go back to index from results" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-22T09:00"
@@ -49,7 +49,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "journey details display correct information" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-22T09:00"
@@ -62,7 +62,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "search results display changeover, fares, price and duration information" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-22T09:00"
@@ -77,7 +77,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "error message persists form data" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Madrid",
       departure_at: "2026-02-22T09:00"
@@ -89,14 +89,14 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "valid search clears error messages" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Madrid",
       departure_at: "2026-02-22T09:00"
     }
     assert_select ".alert-error"
 
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "Madrid",
       to: "Barcelona",
       departure_at: "2026-02-22T09:00"
@@ -107,7 +107,7 @@ class TrainSearchFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "empty search shows appropriate error" do
-    get bot_thetrainline_search_path, params: {
+    get search_bot_thetrainline_index_path, params: {
       from: "",
       to: "",
       departure_at: ""
