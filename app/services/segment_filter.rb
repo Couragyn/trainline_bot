@@ -56,7 +56,7 @@ class SegmentFilter
 
     segment_date = segment["_parsed_date"]
     segment_date ||= DateTime.parse(segment["departure_at"]).to_date
-    
+
     segment_date == @target_date
   rescue ArgumentError
     false

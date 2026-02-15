@@ -168,4 +168,3 @@ class TrainRepositoryTest < ActiveSupport::TestCase
     end
   end
 end
-
