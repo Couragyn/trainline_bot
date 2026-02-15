@@ -73,7 +73,15 @@ class TrainRepository
     file_content = File.read(path)
     data = JSON.parse(file_content)
 
-    @logger.info("TrainRepository#read_fixture_data: Loaded #{data['segments']&.length || 0} segments")
+    # Pre-compute parsed dates for each segment to avoid repeated parsing
+    segments = data["segments"] || []
+    data["segments"] = segments.map do |segment|
+      segment.merge(
+        "_parsed_date" => DateTime.parse(segment["departure_at"]).to_date
+      )
+    end
+
+    @logger.info("TrainRepository#read_fixture_data: Loaded #{segments.length} segments with pre-computed dates")
 
     data
   rescue JSON::ParserError => e

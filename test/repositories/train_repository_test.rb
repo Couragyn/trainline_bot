@@ -134,4 +134,38 @@ class TrainRepositoryTest < ActiveSupport::TestCase
     cached_data_after_repo2 = Rails.cache.read(cache_key)
     assert_equal cached_data_after_repo1, cached_data_after_repo2
   end
+
+  test "pre-computed dates: segments have _parsed_date field" do
+    cache_key = TrainRepository::CACHE_KEY.call
+    Rails.cache.clear
+
+    @repository.find_segments("Madrid", "Barcelona", @departure_date)
+
+    cached_data = Rails.cache.read(cache_key)
+    segments = cached_data["segments"]
+
+    assert segments.any?, "Should have segments in cache"
+
+    segments.each do |segment|
+      assert segment.key?("_parsed_date"), "Each segment should have pre-computed _parsed_date"
+      assert_kind_of Date, segment["_parsed_date"], "Pre-computed date should be a Date object"
+    end
+  end
+
+  test "pre-computed dates: correctly parses ISO 8601 format" do
+    cache_key = TrainRepository::CACHE_KEY.call
+    Rails.cache.clear
+
+    @repository.find_segments("Madrid", "Barcelona", @departure_date)
+
+    cached_data = Rails.cache.read(cache_key)
+    segments = cached_data["segments"]
+
+    segments.each do |segment|
+      departure_string = segment["departure_at"]
+      expected_date = DateTime.iso8601(departure_string).to_date
+      assert_equal expected_date, segment["_parsed_date"]
+    end
+  end
 end
+

@@ -54,15 +54,12 @@ class SegmentFilter
   def matches_date?(segment)
     return false unless segment["departure_at"]
 
-    segment_date = parse_segment_date(segment["departure_at"])
+    segment_date = segment["_parsed_date"]
+    segment_date ||= DateTime.parse(segment["departure_at"]).to_date
+    
     segment_date == @target_date
   rescue ArgumentError
     false
-  end
-
-  def parse_segment_date(datetime_string)
-    @parsed_dates ||= {}
-    @parsed_dates[datetime_string] ||= DateTime.parse(datetime_string).to_date
   end
 
   def has_valid_fares?(segment)

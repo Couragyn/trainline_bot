@@ -38,7 +38,7 @@ Run the test suite:
 rails test
 ```
 
-100+ tests covering models, controllers, integration flows, edge cases, and fixture validation. Currently takes about 400ms.
+140 tests covering models, controllers, integration flows, edge cases, and fixture validation. Currently takes about 500ms.
 
 See `test/TEST_SUITE.md` for details.
 
