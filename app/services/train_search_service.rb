@@ -4,6 +4,12 @@ class TrainSearchService
     @logger = logger
   end
 
+  # Searches for train journeys between two locations on a specific date.
+  # @param from [String] departure city or station name
+  # @param to [String] arrival city or station name
+  # @param departure_at [DateTime] departure date and time
+  # @return [Array<Hash>] array of journey segments with symbolized keys and formatted data
+  # @raise [TrainSearch::DataSourceUnavailableError] if data cannot be loaded
   def search(from, to, departure_at)
     @logger.debug("TrainSearchService#search: #{from} to #{to} at #{departure_at}")
 
