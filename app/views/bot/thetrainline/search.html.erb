@@ -23,7 +23,7 @@
         </div>
         <div>
           <%= form.label :to, class: "form-label" do %>
-            <i class="fas fa-map-pin" style="color: var(--primary);"></i> To
+            <i class="fas fa-map-pin icon-primary"></i> To
           <% end %>
           <%= form.text_field :to, 
               value: @to,
@@ -67,8 +67,8 @@
           <div class="journey-card">
             <div class="journey-header">
               <div class="journey-times">
-                <i class="fas fa-clock" style="color: var(--primary); margin-right: 6px;"></i>
-                <strong><%= format_time(segment[:departure_at]) %></strong> <i class="fas fa-arrow-right" style="color: var(--primary); margin: 0 8px;"></i>
+                <i class="fas fa-clock icon-primary icon-space-right"></i>
+                <strong><%= format_time(segment[:departure_at]) %></strong> <i class="fas fa-arrow-right icon-primary icon-space-horizontal"></i>
                 <strong><%= format_time(segment[:arrival_at]) %></strong>
                 <span class="journey-duration"><%= format_duration(segment[:duration_in_minutes]) %></span>
               </div>

@@ -1,30 +1,38 @@
 module Bot::ThetrainlineHelper
+  # Formats a DateTime into a 24-hour time string.
+  # @param datetime [DateTime]
+  # @return [String]
   def format_time(datetime)
     datetime.strftime("%H:%M")
   end
 
-  # Format "2h 30m"
+  # Formats a duration in minutes (e.g., "2h 30m").
+  # @param minutes [Integer]
+  # @return [String]
   def format_duration(minutes)
     hours = minutes / 60
     mins = minutes % 60
     "#{hours}h #{mins}m"
   end
 
-  # Format "February 16, 2026 at 09:00"
+  # Formats a DateTime into a friendly date/time string.
+  # @param datetime [DateTime]
+  # @return [String]
   def format_datetime(datetime)
     datetime.strftime("%B %d, %Y at %H:%M")
   end
 
-  # Format "Renfe, Thetrainline"
+  # Formats a list of agencies into a display string.
+  # @param agencies [Array<String>]
+  # @return [String]
   def format_operators(agencies)
     agencies.map(&:titleize).join(", ")
   end
 
-  def cheapest_fare(fares)
-    fares.min_by { |f| f[:price_in_cents] }
-  end
-
-  # Format "€38.00" or "$50.00"
+  # Formats a price in cents with a currency symbol.
+  # @param price_in_cents [Integer, nil]
+  # @param currency [String, nil]
+  # @return [String]
   def format_price(price_in_cents, currency)
     return "N/A" if price_in_cents.nil?
 
@@ -33,13 +41,19 @@ module Bot::ThetrainlineHelper
     "#{symbol}#{format('%.2f', amount)}"
   end
 
+  # Formats the cheapest fare price from a list of fares.
+  # @param fares [Array<Hash>]
+  # @return [String]
   def format_cheapest_price(fares)
-    fare = cheapest_fare(fares)
+    fare = fares.min_by { |f| f[:price_in_cents] }
     return "N/A" unless fare
 
     format_price(fare[:price_in_cents], fare[:currency])
   end
 
+  # Maps a currency code to its display symbol.
+  # @param currency [String, nil]
+  # @return [String]
   def currency_symbol(currency)
     case currency&.upcase
     when "EUR" then "€"
@@ -50,7 +64,9 @@ module Bot::ThetrainlineHelper
     end
   end
 
-  # Format "1 change" or "Direct"
+  # Formats the changeover count into a label.
+  # @param count [Integer]
+  # @return [String]
   def format_changeovers(count)
     case count
     when 0 then "Direct"
@@ -59,7 +75,9 @@ module Bot::ThetrainlineHelper
     end
   end
 
-  # Format "Valencia → · → Sevilla"
+  # Creates a visual string representing changeovers.
+  # @param count [Integer]
+  # @return [String]
   def changeover_visual(count)
     return "" if count == 0
 

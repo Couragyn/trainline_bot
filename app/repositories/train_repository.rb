@@ -10,14 +10,13 @@ class TrainRepository
   end
 
   # Finds train segments matching the search criteria.
-  # Filters segments by departure/arrival locations and departure date.
   # @param from [String] departure city or station name
   # @param to [String] arrival city or station name
   # @param date [DateTime] departure date (time is ignored, only date matters)
   # @return [Array<Hash>] array of segment hashes with departure/arrival info and fares
   # @raise [TrainSearch::DataSourceUnavailableError] if fixture data is missing or invalid
   def find_segments(from, to, date)
-    @logger.debug("TrainRepository#find_segments: #{from} → #{to} on #{date.to_date}")
+    @logger.debug("TrainRepository#find_segments: #{from} to #{to} on #{date.to_date}")
 
     data = load_data
     segments = data["segments"] || []

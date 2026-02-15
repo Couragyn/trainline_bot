@@ -38,6 +38,18 @@
   color: var(--primary);
 }
 
+.icon-primary {
+  color: var(--primary);
+}
+
+.icon-space-right {
+  margin-right: 6px;
+}
+
+.icon-space-horizontal {
+  margin: 0 8px;
+}
+
 .form-input {
   width: 100%;
   padding: 12px 14px;

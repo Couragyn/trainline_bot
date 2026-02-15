@@ -12,7 +12,7 @@ class Bot::ThetrainlineController < ApplicationController
     @to = search_params[:to]&.strip
     @departure_at = search_params[:departure_at]
 
-    Rails.logger.info("Search request: #{@from} → #{@to} at #{@departure_at}")
+    Rails.logger.info("Search request: #{@from} to #{@to} at #{@departure_at}")
 
     validator = TrainSearchValidator.new(@from, @to, @departure_at)
 
@@ -42,7 +42,7 @@ class Bot::ThetrainlineController < ApplicationController
     Rails.logger.error("Data source unavailable: #{exception.message}")
     Rails.logger.error("Context: #{exception.context.inspect}") if exception.context.any?
 
-    flash.now[:error] = "The train search service is temporarily unavailable. Please try again in a few minutes."
+    flash.now[:error] = "The train search service is temporarily unavailable. Please try again later."
     render :index, status: :service_unavailable
   end
 end

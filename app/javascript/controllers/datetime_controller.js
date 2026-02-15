@@ -3,34 +3,22 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
     this.element.addEventListener('input', this.validateInput.bind(this))
-    this.element.addEventListener('keydown', this.preventOverflow.bind(this))
     this.element.addEventListener('blur', this.validateDateRange.bind(this))
   }
 
+  // Guard against malformed datetime-local values as the user types.
   validateInput(event) {
     const value = event.target.value
     if (value) {
       const datePattern = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/
       if (!datePattern.test(value)) {
+        // Trim oversized year input back to 4 digits.
         const fixed = value.replace(/^(\d{6,})-/, (match, year) => {
           return year.substring(0, 4) + '-'
         })
         if (fixed !== value) {
           event.target.value = fixed
         }
-      }
-    }
-  }
-
-  preventOverflow(event) {
-    const input = event.target
-    const value = input.value
-    
-    // Check if year has too many digits
-    if (value) {
-      const yearMatch = value.match(/^(\d+)/)
-      if (yearMatch && yearMatch[1].length > 4) {
-        input.value = value.replace(/^(\d{4})\d+/, '$1')
       }
     }
   }
