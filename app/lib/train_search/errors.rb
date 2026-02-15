@@ -2,7 +2,7 @@ module TrainSearch
   class Error < StandardError
     attr_reader :context
 
-    def initialize(message = nil, context: {})
+    def initialize(message = nil, context = {})
       @context = context
       super(message)
     end
@@ -14,8 +14,8 @@ module TrainSearch
   end
 
   class DataSourceUnavailableError < Error
-    def initialize(message = "Train data source is unavailable", context: {})
-      super(message, context: context)
+    def initialize(message = "Train data source is unavailable", context = {})
+      super(message, context)
     end
   end
 end

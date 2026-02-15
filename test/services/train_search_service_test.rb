@@ -7,11 +7,7 @@ class TrainSearchServiceTest < ActiveSupport::TestCase
   end
 
   test "search: returns formatted segments" do
-    results = @service.search(
-      from: "Madrid",
-      to: "Barcelona",
-      departure_at: @departure_date
-    )
+    results = @service.search("Madrid", "Barcelona", @departure_date)
 
     assert_kind_of Array, results
     assert results.any?
@@ -31,11 +27,7 @@ class TrainSearchServiceTest < ActiveSupport::TestCase
   end
 
   test "search: returns segments sorted by departure time" do
-    results = @service.search(
-      from: "Madrid",
-      to: "Barcelona",
-      departure_at: @departure_date
-    )
+    results = @service.search("Madrid", "Barcelona", @departure_date)
 
     assert results.any?
 
@@ -45,11 +37,7 @@ class TrainSearchServiceTest < ActiveSupport::TestCase
   end
 
   test "search: formats fares correctly" do
-    results = @service.search(
-      from: "Madrid",
-      to: "Barcelona",
-      departure_at: @departure_date
-    )
+    results = @service.search("Madrid", "Barcelona", @departure_date)
 
     result = results.first
     fare = result[:fares].first
@@ -63,27 +51,15 @@ class TrainSearchServiceTest < ActiveSupport::TestCase
   end
 
   test "search: returns empty array for non-existent route" do
-    results = @service.search(
-      from: "Madrid",
-      to: "NonExistentCity",
-      departure_at: @departure_date
-    )
+    results = @service.search("Madrid", "NonExistentCity", @departure_date)
 
     assert_equal [], results
   end
 
   test "search: handles case-insensitive searches" do
-    results_lower = @service.search(
-      from: "madrid",
-      to: "barcelona",
-      departure_at: @departure_date
-    )
+    results_lower = @service.search("madrid", "barcelona", @departure_date)
 
-    results_upper = @service.search(
-      from: "MADRID",
-      to: "BARCELONA",
-      departure_at: @departure_date
-    )
+    results_upper = @service.search("MADRID", "BARCELONA", @departure_date)
 
     assert_equal results_lower.length, results_upper.length
   end

@@ -19,4 +19,3 @@ class BotThetrainlineMethodsTest < ActiveSupport::TestCase
     assert_nil result
   end
 end
-

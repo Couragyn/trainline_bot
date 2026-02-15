@@ -32,12 +32,12 @@ class Bot::ThetrainlineHelperTest < ActionView::TestCase
   end
 
   test "format_operators: formats single operator" do
-    agencies = ["thetrainline"]
+    agencies = [ "thetrainline" ]
     assert_equal "Thetrainline", format_operators(agencies)
   end
 
   test "format_operators: formats multiple operators" do
-    agencies = ["thetrainline", "renfe"]
+    agencies = [ "thetrainline", "renfe" ]
     assert_equal "Thetrainline, Renfe", format_operators(agencies)
   end
 
@@ -51,7 +51,7 @@ class Bot::ThetrainlineHelperTest < ActionView::TestCase
       { name: "Premium", price_in_cents: 8000, currency: "EUR" },
       { name: "Economy", price_in_cents: 3000, currency: "EUR" }
     ]
-    
+
     result = cheapest_fare(fares)
     assert_equal 3000, result[:price_in_cents]
     assert_equal "Economy", result[:name]
@@ -71,7 +71,7 @@ class Bot::ThetrainlineHelperTest < ActionView::TestCase
       { name: "Standard", price_in_cents: 5000, currency: "EUR" },
       { name: "Economy", price_in_cents: 3000, currency: "EUR" }
     ]
-    
+
     assert_equal "€30.00", format_cheapest_price(fares)
   end
 

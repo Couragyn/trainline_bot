@@ -5,7 +5,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
     @from = "Madrid"
     @to = "Barcelona"
     @date = DateTime.new(2026, 2, 16, 9, 0, 0, "+01:00")
-    @filter = SegmentFilter.new(from: @from, to: @to, date: @date)
+    @filter = SegmentFilter.new(@from, @to, @date)
   end
 
   test "filter: returns segments matching all criteria" do
@@ -17,7 +17,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -34,7 +34,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Sevilla",
         "arrival_station" => "Santa Justa",
         "arrival_at" => "2026-02-16T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -51,7 +51,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-17T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -77,8 +77,8 @@ class SegmentFilterTest < ActiveSupport::TestCase
   end
 
   test "filter: matches case-insensitively" do
-    filter = SegmentFilter.new(from: "MADRID", to: "barcelona", date: @date)
-    
+    filter = SegmentFilter.new("MADRID", "barcelona", @date)
+
     segments = [
       {
         "departure_city" => "Madrid",
@@ -87,7 +87,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -96,8 +96,8 @@ class SegmentFilterTest < ActiveSupport::TestCase
   end
 
   test "filter: matches by station name" do
-    filter = SegmentFilter.new(from: "Atocha", to: "Sants", date: @date)
-    
+    filter = SegmentFilter.new("Atocha", "Sants", @date)
+
     segments = [
       {
         "departure_city" => "Madrid",
@@ -106,7 +106,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -123,7 +123,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T18:30:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -140,7 +140,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       },
       {
         "departure_city" => "Madrid",
@@ -149,7 +149,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T18:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       },
       {
         "departure_city" => "Valencia",
@@ -158,7 +158,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Sevilla",
         "arrival_station" => "Santa Justa",
         "arrival_at" => "2026-02-16T14:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -175,7 +175,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 
@@ -192,7 +192,7 @@ class SegmentFilterTest < ActiveSupport::TestCase
         "arrival_city" => "Barcelona",
         "arrival_station" => "Sants",
         "arrival_at" => "2026-02-16T13:00:00+01:00",
-        "fares" => [{ "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" }]
+        "fares" => [ { "name" => "Standard", "price_in_cents" => 5000, "currency" => "EUR" } ]
       }
     ]
 

@@ -1,9 +1,16 @@
 class HealthController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:show, :deep]
+  skip_before_action :verify_authenticity_token, only: [ :show, :deep ]
+
+  attr_writer :repository
+
+  def initialize
+    super
+    @repository = nil
+  end
 
   def show
     render json: {
-      status: 'ok',
+      status: "ok",
       timestamp: Time.current.iso8601
     }
   end
@@ -18,7 +25,7 @@ class HealthController < ApplicationController
     status_code = all_healthy ? :ok : :service_unavailable
 
     render json: {
-      status: all_healthy ? 'ok' : 'degraded',
+      status: all_healthy ? "ok" : "degraded",
       timestamp: Time.current.iso8601,
       checks: checks
     }, status: status_code
@@ -27,15 +34,15 @@ class HealthController < ApplicationController
   private
 
   def check_cache
-    test_key = 'health_check_test'
-    Rails.cache.write(test_key, 'test', expires_in: 1.second)
+    test_key = "health_check_test"
+    Rails.cache.write(test_key, "test", expires_in: 1.second)
     result = Rails.cache.read(test_key)
     Rails.cache.delete(test_key)
 
-    if result == 'test'
-      { healthy: true, message: 'Cache is working' }
+    if result == "test"
+      { healthy: true, message: "Cache is working" }
     else
-      { healthy: false, message: 'Cache read/write failed' }
+      { healthy: false, message: "Cache read/write failed" }
     end
   rescue StandardError => e
     Rails.logger.error("Health check - Cache failed: #{e.message}")
@@ -43,15 +50,19 @@ class HealthController < ApplicationController
   end
 
   def check_train_data
-    repository = TrainRepository.new
-    
-    if repository.healthy?
-      { healthy: true, message: 'Train data is accessible' }
+    repo = repository
+
+    if repo.healthy?
+      { healthy: true, message: "Train data is accessible" }
     else
-      { healthy: false, message: 'Train data is not accessible' }
+      { healthy: false, message: "Train data is not accessible" }
     end
   rescue StandardError => e
     Rails.logger.error("Health check - Train data failed: #{e.message}")
     { healthy: false, message: "Train data error: #{e.message}" }
+  end
+
+  def repository
+    @repository ||= TrainRepository.new
   end
 end

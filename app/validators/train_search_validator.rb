@@ -4,7 +4,7 @@ class TrainSearchValidator
 
   attr_reader :errors
 
-  def initialize(from:, to:, departure_at:)
+  def initialize(from, to, departure_at)
     @from = from
     @to = to
     @departure_at = departure_at
@@ -13,11 +13,11 @@ class TrainSearchValidator
 
   def valid?
     @errors = []
-    
+
     validate_presence
     validate_departure_date
     validate_different_locations
-    
+
     @errors.empty?
   end
 
@@ -41,7 +41,7 @@ class TrainSearchValidator
 
     begin
       parsed_date = DateTime.parse(@departure_at)
-      
+
       if parsed_date < MIN_DATE
         @errors << "Departure date cannot be before February 16, 2026"
       elsif parsed_date > MAX_DATE
@@ -54,7 +54,7 @@ class TrainSearchValidator
 
   def validate_different_locations
     return if @from.blank? || @to.blank?
-    
+
     if LocationNormalizer.normalize(@from) == LocationNormalizer.normalize(@to)
       @errors << "Departure and arrival locations must be different"
     end

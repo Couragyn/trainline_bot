@@ -1,24 +1,20 @@
 class TrainSearchService
-  def initialize(repository: TrainRepository.new, logger: Rails.logger)
+  def initialize(repository = TrainRepository.new, logger = Rails.logger)
     @repository = repository
     @logger = logger
   end
 
-  def search(from:, to:, departure_at:)
+  def search(from, to, departure_at)
     @logger.debug("TrainSearchService#search: #{from} to #{to} at #{departure_at}")
-    
-    segments = @repository.find_segments(
-      from: from,
-      to: to,
-      date: departure_at
-    )
+
+    segments = @repository.find_segments(from, to, departure_at)
 
     formatted_segments = format_segments(segments)
     sorted_segments = sort_by_departure_time(formatted_segments)
     limited_results = limit_results(sorted_segments)
-    
+
     @logger.info("TrainSearchService#search: Returning #{limited_results.length} segments")
-    
+
     limited_results
   end
 
@@ -58,7 +54,7 @@ class TrainSearchService
 
   def limit_results(segments)
     max_results = TrainSearchConfig.max_results
-    
+
     if segments.length > max_results
       @logger.warn("TrainSearchService#limit_results: Limiting #{segments.length} results to #{max_results}")
       segments.take(max_results)
